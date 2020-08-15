@@ -9,3 +9,17 @@ auditpol /set /category:* /success:enable /failure:enable
 Set-MpPreference -DisableRealtimeMonitoring $true
 New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name DisableAntiSpyware -Value 1 -PropertyType DWORD -Force
 
+# Enable Powershell Log
+function Enable-PSScriptBlockLogging
+{
+    $basePath = 'HKLM:\Software\Policies\Microsoft\Windows' +
+      '\PowerShell\ScriptBlockLogging'
+
+    if(-not (Test-Path $basePath))
+    {
+        $null = New-Item $basePath -Force
+    }
+
+    Set-ItemProperty $basePath -Name EnableScriptBlockLogging -Value "1"
+}
+Enable-PSScriptBlockLogging
